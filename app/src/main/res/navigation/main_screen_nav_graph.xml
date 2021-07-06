@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/imageSearchFragment">
+
+    <fragment
+        android:id="@+id/displayImageFragment"
+        android:name="com.elkhami.flickerimagesearch.view.displayimage.DisplayImageFragment"
+        android:label="DisplayImageFragment"
+        tools:layout="@layout/fragment_display_image"/>
+    <fragment
+        android:id="@+id/savedImagesFragment"
+        android:name="com.elkhami.flickerimagesearch.view.savedimages.SavedImagesFragment"
+        android:label="SavedImagesFragment"
+        tools:layout="@layout/fragment_saved_images"/>
+    <fragment
+        android:id="@+id/imageSearchFragment"
+        android:name="com.elkhami.flickerimagesearch.view.imagesearch.ImageSearchFragment"
+        android:label="ImageSearchFragment"
+        tools:layout="@layout/fragment_image_search">
+        <action
+            android:id="@+id/action_imageSearchFragment_to_displayImageFragment"
+            app:destination="@id/displayImageFragment" />
+        <action
+            android:id="@+id/action_imageSearchFragment_to_savedImagesFragment"
+            app:destination="@id/savedImagesFragment" />
+    </fragment>
+</navigation>
