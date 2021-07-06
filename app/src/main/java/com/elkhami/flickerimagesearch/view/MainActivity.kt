@@ -1,7 +1,8 @@
-package com.elkhami.flickerimagesearch
+package com.elkhami.flickerimagesearch.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.elkhami.flickerimagesearch.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
