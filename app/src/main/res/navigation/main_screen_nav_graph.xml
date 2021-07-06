@@ -9,12 +9,12 @@
         android:id="@+id/displayImageFragment"
         android:name="com.elkhami.flickerimagesearch.view.displayimage.DisplayImageFragment"
         android:label="DisplayImageFragment"
-        tools:layout="@layout/fragment_display_image"/>
+        tools:layout="@layout/fragment_display_image" />
     <fragment
         android:id="@+id/savedImagesFragment"
         android:name="com.elkhami.flickerimagesearch.view.savedimages.SavedImagesFragment"
         android:label="SavedImagesFragment"
-        tools:layout="@layout/fragment_saved_images"/>
+        tools:layout="@layout/fragment_saved_images" />
     <fragment
         android:id="@+id/imageSearchFragment"
         android:name="com.elkhami.flickerimagesearch.view.imagesearch.ImageSearchFragment"

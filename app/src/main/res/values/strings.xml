@@ -3,4 +3,6 @@
     <string name="app_icon">App Icon</string>
     <string name="search_images">Search Images</string>
     <string name="saved_images">Saved Images</string>
+    <string name="image_view">Image View</string>
+    <string name="save">Save</string>
 </resources>
