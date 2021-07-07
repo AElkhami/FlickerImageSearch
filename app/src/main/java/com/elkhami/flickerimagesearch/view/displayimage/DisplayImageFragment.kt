@@ -12,18 +12,24 @@ import com.elkhami.flickerimagesearch.databinding.FragmentDisplayImageBinding
  */
 class DisplayImageFragment: Fragment() {
 
-    private lateinit var binding: FragmentDisplayImageBinding
+    private var _binding: FragmentDisplayImageBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDisplayImageBinding.inflate(inflater, container, false)
+        _binding = FragmentDisplayImageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
