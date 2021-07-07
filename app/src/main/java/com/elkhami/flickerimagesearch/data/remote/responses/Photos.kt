@@ -1,4 +1,4 @@
-package com.elkhami.flickerimagesearch.data.model
+package com.elkhami.flickerimagesearch.data.remote.responses
 
 data class Photos(
     val page: Int,
