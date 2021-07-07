@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.elkhami.flickerimagesearch.databinding.FragmentDisplayImageBinding
+import com.elkhami.flickerimagesearch.databinding.FragmentDisplayPhotoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by A.Elkhami on 06,July,2021
  */
-class DisplayImageFragment: Fragment() {
+@AndroidEntryPoint
+class DisplayImageFragment : Fragment() {
 
-    private var _binding: FragmentDisplayImageBinding? = null
+    private var _binding: FragmentDisplayPhotoBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +22,7 @@ class DisplayImageFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDisplayImageBinding.inflate(inflater, container, false)
+        _binding = FragmentDisplayPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
 

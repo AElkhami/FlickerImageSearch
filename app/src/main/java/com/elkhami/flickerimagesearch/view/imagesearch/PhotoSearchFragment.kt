@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.elkhami.flickerimagesearch.databinding.FragmentImageSearchBinding
+import com.elkhami.flickerimagesearch.databinding.FragmentPhotoSearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by A.Elkhami on 06,July,2021
  */
-class PhotoSearchFragment: Fragment() {
+@AndroidEntryPoint
+class PhotoSearchFragment : Fragment() {
 
-    private var _binding : FragmentImageSearchBinding? = null
+    private var _binding: FragmentPhotoSearchBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +22,7 @@ class PhotoSearchFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentImageSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentPhotoSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 

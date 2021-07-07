@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.elkhami.flickerimagesearch.databinding.FragmentSavedImagesBinding
+import com.elkhami.flickerimagesearch.databinding.FragmentSavedPhotosBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by A.Elkhami on 06,July,2021
  */
-class SavedPhotosFragment: Fragment() {
+@AndroidEntryPoint
+class SavedPhotosFragment : Fragment() {
 
-    private var _binding: FragmentSavedImagesBinding? = null
+    private var _binding: FragmentSavedPhotosBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +22,7 @@ class SavedPhotosFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSavedImagesBinding.inflate(inflater, container, false)
+        _binding = FragmentSavedPhotosBinding.inflate(inflater, container, false)
         return binding.root
     }
 
