@@ -9,22 +9,23 @@
         android:id="@+id/displayImageFragment"
         android:name="com.elkhami.flickerimagesearch.view.displayimage.DisplayImageFragment"
         android:label="DisplayImageFragment"
-        tools:layout="@layout/fragment_display_image" />
+        tools:layout="@layout/fragment_display_photo" />
     <fragment
         android:id="@+id/savedImagesFragment"
-        android:name="com.elkhami.flickerimagesearch.view.savedimages.SavedImagesFragment"
+        android:name="com.elkhami.flickerimagesearch.view.savedimages.SavedPhotosFragment"
         android:label="SavedImagesFragment"
-        tools:layout="@layout/fragment_saved_images" />
+        tools:layout="@layout/fragment_saved_photos" >
+        <action
+            android:id="@+id/action_savedImagesFragment_to_displayImageFragment"
+            app:destination="@id/displayImageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/imageSearchFragment"
-        android:name="com.elkhami.flickerimagesearch.view.imagesearch.ImageSearchFragment"
+        android:name="com.elkhami.flickerimagesearch.view.imagesearch.PhotoSearchFragment"
         android:label="ImageSearchFragment"
-        tools:layout="@layout/fragment_image_search">
+        tools:layout="@layout/fragment_photo_search">
         <action
             android:id="@+id/action_imageSearchFragment_to_displayImageFragment"
             app:destination="@id/displayImageFragment" />
-        <action
-            android:id="@+id/action_imageSearchFragment_to_savedImagesFragment"
-            app:destination="@id/savedImagesFragment" />
     </fragment>
 </navigation>

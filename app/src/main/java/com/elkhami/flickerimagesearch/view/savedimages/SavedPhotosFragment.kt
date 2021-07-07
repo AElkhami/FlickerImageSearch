@@ -1,18 +1,18 @@
-package com.elkhami.flickerimagesearch.view.imagesearch
+package com.elkhami.flickerimagesearch.view.savedimages
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.elkhami.flickerimagesearch.databinding.FragmentImageSearchBinding
+import com.elkhami.flickerimagesearch.databinding.FragmentSavedImagesBinding
 
 /**
  * Created by A.Elkhami on 06,July,2021
  */
-class ImageSearchFragment: Fragment() {
+class SavedPhotosFragment: Fragment() {
 
-    private var _binding : FragmentImageSearchBinding? = null
+    private var _binding: FragmentSavedImagesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,12 +20,13 @@ class ImageSearchFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentImageSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSavedImagesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun onDestroy() {

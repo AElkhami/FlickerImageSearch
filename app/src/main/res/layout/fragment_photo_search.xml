@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:spanCount="@integer/span_count"
         tools:itemCount="@integer/recycler_item_count"
-        tools:listitem="@layout/image_item" />
+        tools:listitem="@layout/photo_item" />
 
     <ProgressBar
         android:id="@+id/progressBar"
