@@ -1,11 +1,17 @@
 package com.elkhami.flickerimagesearch.di
 
 import android.content.Context
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.elkhami.flickerimagesearch.BuildConfig
 import com.elkhami.flickerimagesearch.R
+import com.elkhami.flickerimagesearch.data.local.SavedPhotoDAO
+import com.elkhami.flickerimagesearch.data.local.SavedPhotoDataBase
 import com.elkhami.flickerimagesearch.data.remote.api.FlickerAPI
+import com.elkhami.flickerimagesearch.data.repository.DefaultRepository
+import com.elkhami.flickerimagesearch.data.repository.Repository
+import com.elkhami.flickerimagesearch.other.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,10 +28,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    @Singleton
+    @Provides
+    fun provideSavedPhotosDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(context, SavedPhotoDataBase::class.java, DATABASE_NAME).build()
 
     @Singleton
     @Provides
-    fun provideFlickerAPI(): FlickerAPI{
+    fun provideSavedPhotosDAO(dataBase: SavedPhotoDataBase) = dataBase.savedPhotoDAO()
+
+    @Singleton
+    @Provides
+    fun provideFlickerAPI(): FlickerAPI {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BuildConfig.BASE_URL)
@@ -35,8 +49,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideGlide(@ApplicationContext context: Context)
-    = Glide.with(context)
+    fun provideRepository(dao: SavedPhotoDAO, api: FlickerAPI) =
+        DefaultRepository(dao, api) as Repository
+
+    @Singleton
+    @Provides
+    fun provideGlide(@ApplicationContext context: Context) = Glide.with(context)
         .setDefaultRequestOptions(
             RequestOptions()
                 .placeholder(R.drawable.ic_image_search)
