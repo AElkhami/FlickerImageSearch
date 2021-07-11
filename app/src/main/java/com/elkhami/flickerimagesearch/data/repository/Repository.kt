@@ -2,6 +2,8 @@ package com.elkhami.flickerimagesearch.data.repository
 
 import androidx.lifecycle.LiveData
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
+import com.elkhami.flickerimagesearch.data.remote.responses.FlickerPhotosResponse
+import com.elkhami.flickerimagesearch.other.Resource
 
 /**
  * Created by A.Elkhami on 11,July,2021
@@ -16,7 +18,7 @@ interface Repository {
 
     fun getAllSavedPhotos(): LiveData<List<SavedPhoto>>
 
-    suspend fun searchFlickerWithKeyword(searchWord :String)
+    suspend fun searchFlickerWithKeyword(searchWord :String) : Resource<FlickerPhotosResponse>
 
 
 }
