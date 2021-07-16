@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="image_view_item">100dp</dimen>
+    <dimen name="image_view_item">200dp</dimen>
     <dimen name="default_margin">16dp</dimen>
     <dimen name="small_margin">8dp</dimen>
+    <dimen name="recycler_item_margin">8dp</dimen>
     <dimen name="match_constraint">0dp</dimen>
     <dimen name="large_image_size">300dp</dimen>
     <dimen name="large_margin">24dp</dimen>
+    <dimen name="corner_raidus">40dp</dimen>
+    <dimen name="search_edit_text_start_end_padding">20dp</dimen>
+    <dimen name="search_edit_text_top_bot_padding">10dp</dimen>
 </resources>

@@ -1,5 +1,10 @@
 package com.elkhami.flickerimagesearch.data.remote.responses
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
+
+@Parcelize
 data class Photo(
     val farm: Int,
     val id: String,
@@ -8,6 +13,6 @@ data class Photo(
     val ispublic: Int,
     val owner: String,
     val secret: String,
-    val server: Any,
+    val server: String,
     val title: String
-)
+): Parcelable

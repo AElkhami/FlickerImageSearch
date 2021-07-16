@@ -17,9 +17,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 /**
  * Created by A.Elkhami on 07,July,2021
@@ -40,9 +43,14 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFlickerAPI(): FlickerAPI {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val httpClient = OkHttpClient.Builder().addInterceptor(logging)
+
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BuildConfig.BASE_URL)
+            .client(httpClient.build())
             .build()
             .create(FlickerAPI::class.java)
     }

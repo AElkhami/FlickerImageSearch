@@ -9,7 +9,11 @@
         android:id="@+id/displayImageFragment"
         android:name="com.elkhami.flickerimagesearch.view.displayimage.DisplayImageFragment"
         android:label="DisplayImageFragment"
-        tools:layout="@layout/fragment_display_photo" />
+        tools:layout="@layout/fragment_display_photo" >
+        <argument
+            android:name="@string/photo_arg"
+            app:argType="com.elkhami.flickerimagesearch.data.remote.responses.Photo"/>
+    </fragment>
     <fragment
         android:id="@+id/savedImagesFragment"
         android:name="com.elkhami.flickerimagesearch.view.savedimages.SavedPhotosFragment"

@@ -5,4 +5,7 @@
     <string name="saved_images">Saved Images</string>
     <string name="image_view">Image View</string>
     <string name="save">Save</string>
+    <string name="enter_search_keyword">Enter search keyword</string>
+    <string name="somthing_went_wrong">Something went wrong.</string>
+    <string name="photo_arg">PhotoArg</string>
 </resources>
