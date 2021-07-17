@@ -51,6 +51,8 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = photosList[position]
 
+        holder.binding.imageTitle.text = photo.title
+
         val photoUrl= "https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg"
 
         glide.load(photoUrl).into(holder.binding.imageView)
