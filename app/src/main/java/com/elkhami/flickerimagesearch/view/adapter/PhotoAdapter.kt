@@ -2,7 +2,7 @@ package com.elkhami.flickerimagesearch.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -15,10 +15,10 @@ import javax.inject.Inject
  */
 
 class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
-    RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
+    PagingDataAdapter<Photo, PhotoAdapter.ViewHolder>(DiffUtilCallback) {
 
 
-    private val diffUtilCallback = object : DiffUtil.ItemCallback<Photo>() {
+    object DiffUtilCallback : DiffUtil.ItemCallback<Photo>() {
         override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
             return oldItem.id == newItem.id
         }
@@ -28,15 +28,9 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffUtilCallback)
+    private var onItemClickListener: ((Photo) -> Unit)? = null
 
-    var photosList: List<Photo>
-        get() = differ.currentList
-        set(value) = differ.submitList(value)
-
-    private var onItemClickListener: ((Photo)->Unit)? = null
-
-    fun setOnItemClickListener(listener: ((Photo)->Unit)){
+    fun setOnItemClickListener(listener: ((Photo) -> Unit)) {
         onItemClickListener = listener
     }
 
@@ -49,23 +43,28 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val photo = photosList[position]
 
-        holder.binding.imageTitle.text = photo.title
+        getItem(position)?.let { photo ->
 
-        val photoUrl= "https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg"
+            holder.binding.imageTitle.text = photo.title
 
-        glide.load(photoUrl).into(holder.binding.imageView)
+            val photoUrl =
+                "https://farm" +
+                        "${photo.farm}.staticflickr.com/" +
+                        "${photo.server}/" +
+                        "${photo.id}_" +
+                        "${photo.secret}.jpg"
 
-        holder.itemView.apply {
+            glide.load(photoUrl).into(holder.binding.imageView)
 
-            setOnClickListener {
-                onItemClickListener?.let {
-                    it(photo)
+            holder.itemView.apply {
+
+                setOnClickListener {
+                    onItemClickListener?.let {
+                        it(photo)
+                    }
                 }
             }
         }
     }
-
-    override fun getItemCount(): Int = photosList.size
 }

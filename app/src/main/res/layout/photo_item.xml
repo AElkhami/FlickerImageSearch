@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="@dimen/image_view_item"
+        android:layout_width="0dp"
         android:layout_height="@dimen/image_view_item"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"

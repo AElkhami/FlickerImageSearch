@@ -6,18 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkhami.flickerimagesearch.R
 import com.elkhami.flickerimagesearch.databinding.FragmentPhotoSearchBinding
 import com.elkhami.flickerimagesearch.other.Constants.GRID_SPAN_COUNT
 import com.elkhami.flickerimagesearch.other.EditTextExtensions.hideKeyboard
 import com.elkhami.flickerimagesearch.other.MarginItemDecoration
-import com.elkhami.flickerimagesearch.other.Status
 import com.elkhami.flickerimagesearch.view.adapter.PhotoAdapter
 import com.elkhami.flickerimagesearch.view.imagesearch.viewmodel.PhotoSearchViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 /**
@@ -46,33 +48,44 @@ class PhotoSearchFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerAdapter()
-        subscribeToObservers()
+        setSearchButtonClickListener()
+        setPhotoAdapterClickListener()
+        addPhotoLoadStateListener()
 
-/*      --Optional in case the user want it for automatic search.
+    }
 
-        var job: Job? = null
+    private fun addPhotoLoadStateListener() {
+        photoAdapter.addLoadStateListener { loadState ->
 
-        binding.searchEditText.addTextChangedListener { editable ->
-            job?.cancel()
+            if (loadState.refresh is LoadState.Loading) {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.imagesRecyclerView.visibility = View.GONE
+            } else {
+                binding.searchButton.isEnabled = true
 
-                job = lifecycleScope.launch {
-                    delay(SEARCH_DELAY_TIME)
-                    editable?.let {
-                        if (editable.toString().isNotEmpty()) {
-                            viewModel.searchFlickerWithKeyword(editable.toString())
-                        }
-                    }
+                binding.progressBar.visibility = View.GONE
+                binding.imagesRecyclerView.visibility = View.VISIBLE
+
+                // getting the error
+                val errorState = when {
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
                 }
-        }*/
-
-        binding.searchButton.setOnClickListener {
-            binding.searchEditText.text?.let { editable ->
-                viewModel.searchFlickerWithKeyword(editable.toString())
-                binding.searchEditText.hideKeyboard()
-                binding.searchButton.isEnabled = false
+                //show the error
+                errorState?.let {
+                    Snackbar.make(
+                        binding.root,
+                        it.error.message ?: getString(R.string.somthing_went_wrong),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
+    }
 
+    private fun setPhotoAdapterClickListener() {
         photoAdapter.setOnItemClickListener {
             val bundle = Bundle()
             bundle.apply {
@@ -82,9 +95,18 @@ class PhotoSearchFragment @Inject constructor(
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    private fun setSearchButtonClickListener() {
+        binding.searchButton.setOnClickListener {
+            binding.searchEditText.text?.let { editable ->
+                if (editable.isNotEmpty()) {
+                    viewModel.getPaginatingData(editable.toString())
+                    binding.searchEditText.hideKeyboard()
+                    binding.searchButton.isEnabled = false
+                    setPhotosListToPhotoAdapter()
+                }
+
+            }
+        }
     }
 
     private fun setUpRecyclerAdapter() {
@@ -99,28 +121,17 @@ class PhotoSearchFragment @Inject constructor(
         }
     }
 
-    private fun subscribeToObservers() {
-        viewModel.flickerPhotos.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                when (result.status) {
-                    Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
-                        photoAdapter.photosList = result.data?.photos?.photo ?: listOf()
-                    }
-                    Status.FAILED -> {
-                        binding.progressBar.visibility = View.GONE
-
-                        Snackbar.make(
-                            binding.root,
-                            result.message ?: getString(R.string.somthing_went_wrong),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
-                }
-
-                binding.searchButton.isEnabled = true
+    private fun setPhotosListToPhotoAdapter() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.photosFlow.collectLatest {
+                photoAdapter.submitData(it)
             }
-        })
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

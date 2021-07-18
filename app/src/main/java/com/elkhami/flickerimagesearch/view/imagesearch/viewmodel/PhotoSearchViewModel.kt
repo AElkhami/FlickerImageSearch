@@ -1,15 +1,13 @@
 package com.elkhami.flickerimagesearch.view.imagesearch.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elkhami.flickerimagesearch.data.local.SavedPhoto
-import com.elkhami.flickerimagesearch.data.remote.responses.FlickerPhotosResponse
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 import com.elkhami.flickerimagesearch.data.repository.DefaultRepository
-import com.elkhami.flickerimagesearch.other.Event
-import com.elkhami.flickerimagesearch.other.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,21 +18,13 @@ import javax.inject.Inject
 class PhotoSearchViewModel @Inject constructor(private val repository: DefaultRepository) :
     ViewModel() {
 
-    private val _flickerPhotos = MutableLiveData<Event<Resource<FlickerPhotosResponse>>>()
-    var flickerPhotos: LiveData<Event<Resource<FlickerPhotosResponse>>> = _flickerPhotos
+    private lateinit var _photosFlow: Flow<PagingData<Photo>>
+    val photosFlow: Flow<PagingData<Photo>>
+        get() = _photosFlow
 
-
-    fun searchFlickerWithKeyword(searchWord: String) {
-        if(searchWord.isEmpty()){
-            return
-        }
-
-        _flickerPhotos.value = Event(Resource.Loading())
-
-        viewModelScope.launch {
-            val response = repository.searchFlickerWithKeyword(searchWord)
-            _flickerPhotos.value = Event(response)
-        }
+    fun getPaginatingData(searchWord: String) = viewModelScope.launch {
+        val flow = repository.getPaginatingData(searchWord).cachedIn(viewModelScope)
+        _photosFlow = flow
     }
 
 }

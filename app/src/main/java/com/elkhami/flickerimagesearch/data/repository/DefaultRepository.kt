@@ -1,13 +1,15 @@
 package com.elkhami.flickerimagesearch.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
 import com.elkhami.flickerimagesearch.data.local.SavedPhotoDAO
+import com.elkhami.flickerimagesearch.data.paging.PhotoPagingDataSource
 import com.elkhami.flickerimagesearch.data.remote.api.FlickerAPI
-import com.elkhami.flickerimagesearch.data.remote.responses.FlickerPhotosResponse
-import com.elkhami.flickerimagesearch.other.Constants.NETWORK_ERROR
-import com.elkhami.flickerimagesearch.other.Constants.UNKNOWN_ERROR
-import com.elkhami.flickerimagesearch.other.Resource
+import com.elkhami.flickerimagesearch.data.remote.responses.Photo
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -34,25 +36,10 @@ class DefaultRepository @Inject constructor(
         return dao.getAllSavedPhotos()
     }
 
-    override suspend fun searchFlickerWithKeyword(searchWord: String)
-            : Resource<FlickerPhotosResponse> {
-        return try {
-            val response = api.searchFlickerPhotos(searchKeyword = searchWord)
-
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    return@let Resource.Success(it)
-                } ?: return Resource.Failed(null, UNKNOWN_ERROR)
-            } else {
-                return Resource.Failed(null, UNKNOWN_ERROR)
-            }
-        } catch (e: Exception) {
-            Resource.Failed(
-                null,
-                NETWORK_ERROR
-            )
-        }
-    }
-
+    override suspend fun getPaginatingData(searchWord: String)
+    : Flow<PagingData<Photo>> = Pager(
+        config = PagingConfig(20 , 2),
+    pagingSourceFactory = {PhotoPagingDataSource(api, searchWord)}
+    ).flow
 
 }

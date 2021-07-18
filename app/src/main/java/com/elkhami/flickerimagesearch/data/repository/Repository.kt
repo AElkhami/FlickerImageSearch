@@ -1,9 +1,11 @@
 package com.elkhami.flickerimagesearch.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
-import com.elkhami.flickerimagesearch.data.remote.responses.FlickerPhotosResponse
-import com.elkhami.flickerimagesearch.other.Resource
+import com.elkhami.flickerimagesearch.data.remote.responses.Photo
+import kotlinx.coroutines.flow.Flow
+
 
 /**
  * Created by A.Elkhami on 11,July,2021
@@ -18,7 +20,6 @@ interface Repository {
 
     fun getAllSavedPhotos(): LiveData<List<SavedPhoto>>
 
-    suspend fun searchFlickerWithKeyword(searchWord :String) : Resource<FlickerPhotosResponse>
-
+    suspend fun getPaginatingData(searchWord :String) : Flow<PagingData<Photo>>
 
 }
