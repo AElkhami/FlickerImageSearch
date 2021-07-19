@@ -16,6 +16,7 @@ import com.elkhami.flickerimagesearch.other.Constants.GRID_SPAN_COUNT
 import com.elkhami.flickerimagesearch.other.EditTextExtensions.hideKeyboard
 import com.elkhami.flickerimagesearch.other.MarginItemDecoration
 import com.elkhami.flickerimagesearch.view.adapter.PhotoAdapter
+import com.elkhami.flickerimagesearch.view.adapter.PhotoLoadStateAdapter
 import com.elkhami.flickerimagesearch.view.imagesearch.viewmodel.PhotoSearchViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,13 +112,18 @@ class PhotoSearchFragment @Inject constructor(
 
     private fun setUpRecyclerAdapter() {
         binding.imagesRecyclerView.apply {
-            adapter = photoAdapter
+            adapter = photoAdapter.withLoadStateFooter(
+                footer = PhotoLoadStateAdapter{
+                    photoAdapter.retry()
+                }
+            )
             addItemDecoration(
                 MarginItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.recycler_item_margin)
                 )
             )
             layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+
         }
     }
 

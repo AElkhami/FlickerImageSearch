@@ -8,4 +8,5 @@
     <string name="enter_search_keyword">Enter search keyword</string>
     <string name="somthing_went_wrong">Something went wrong.</string>
     <string name="photo_arg">PhotoArg</string>
+    <string name="retry">Retry</string>
 </resources>

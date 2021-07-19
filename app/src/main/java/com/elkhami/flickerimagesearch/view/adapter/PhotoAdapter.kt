@@ -17,24 +17,6 @@ import javax.inject.Inject
 class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
     PagingDataAdapter<Photo, PhotoAdapter.ViewHolder>(DiffUtilCallback) {
 
-
-    object DiffUtilCallback : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem.id == newItem.id
-        }
-    }
-
-    private var onItemClickListener: ((Photo) -> Unit)? = null
-
-    fun setOnItemClickListener(listener: ((Photo) -> Unit)) {
-        onItemClickListener = listener
-    }
-
-
     class ViewHolder(val binding: PhotoItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -66,5 +48,21 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
                 }
             }
         }
+    }
+
+    object DiffUtilCallback : DiffUtil.ItemCallback<Photo>() {
+        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+
+    private var onItemClickListener: ((Photo) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: ((Photo) -> Unit)) {
+        onItemClickListener = listener
     }
 }
