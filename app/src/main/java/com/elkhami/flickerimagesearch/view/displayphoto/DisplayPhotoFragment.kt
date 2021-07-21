@@ -1,34 +1,43 @@
-package com.elkhami.flickerimagesearch.view.savedimages
+package com.elkhami.flickerimagesearch.view.displayphoto
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.elkhami.flickerimagesearch.databinding.FragmentSavedPhotosBinding
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.RequestManager
+import com.elkhami.flickerimagesearch.databinding.FragmentDisplayPhotoBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Created by A.Elkhami on 06,July,2021
  */
 @AndroidEntryPoint
-class SavedPhotosFragment : Fragment() {
+class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager) : Fragment() {
 
-    private var _binding: FragmentSavedPhotosBinding? = null
+    private var _binding: FragmentDisplayPhotoBinding? = null
     private val binding get() = _binding!!
+
+    private val arg : DisplayPhotoFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSavedPhotosBinding.inflate(inflater, container, false)
+        _binding = FragmentDisplayPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arg.photoArg?.let {
+            glide.load(it.photoURL).into(binding.imageView)
+            binding.imageTitle.text = it.title
+        }
     }
 
     override fun onDestroy() {

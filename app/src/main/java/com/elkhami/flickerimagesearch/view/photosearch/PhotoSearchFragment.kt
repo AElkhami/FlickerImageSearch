@@ -1,4 +1,4 @@
-package com.elkhami.flickerimagesearch.view.imagesearch
+package com.elkhami.flickerimagesearch.view.photosearch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkhami.flickerimagesearch.R
 import com.elkhami.flickerimagesearch.databinding.FragmentPhotoSearchBinding
@@ -17,7 +18,7 @@ import com.elkhami.flickerimagesearch.other.EditTextExtensions.hideKeyboard
 import com.elkhami.flickerimagesearch.other.MarginItemDecoration
 import com.elkhami.flickerimagesearch.view.adapter.PhotoAdapter
 import com.elkhami.flickerimagesearch.view.adapter.PhotoLoadStateAdapter
-import com.elkhami.flickerimagesearch.view.imagesearch.viewmodel.PhotoSearchViewModel
+import com.elkhami.flickerimagesearch.view.photosearch.viewmodel.PhotoSearchViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -60,12 +61,10 @@ class PhotoSearchFragment @Inject constructor(
 
             if (loadState.refresh is LoadState.Loading) {
                 binding.progressBar.visibility = View.VISIBLE
-                binding.imagesRecyclerView.visibility = View.GONE
             } else {
                 binding.searchButton.isEnabled = true
 
                 binding.progressBar.visibility = View.GONE
-                binding.imagesRecyclerView.visibility = View.VISIBLE
 
                 // getting the error
                 val errorState = when {
@@ -90,9 +89,10 @@ class PhotoSearchFragment @Inject constructor(
         photoAdapter.setOnItemClickListener {
             val bundle = Bundle()
             bundle.apply {
-                putParcelable(getString(R.string.photo_arg), it)
+                putParcelable("photoArg", it)
             }
-            findNavController().navigate(R.id.action_imageSearchFragment_to_displayImageFragment)
+            findNavController()
+                .navigate(R.id.action_imageSearchFragment_to_displayImageFragment, bundle)
         }
     }
 
@@ -103,6 +103,8 @@ class PhotoSearchFragment @Inject constructor(
                     viewModel.getPaginatingData(editable.toString())
                     binding.searchEditText.hideKeyboard()
                     binding.searchButton.isEnabled = false
+                    photoAdapter.submitData(lifecycle, PagingData.empty())
+
                     setPhotosListToPhotoAdapter()
                 }
 
@@ -113,7 +115,7 @@ class PhotoSearchFragment @Inject constructor(
     private fun setUpRecyclerAdapter() {
         binding.imagesRecyclerView.apply {
             adapter = photoAdapter.withLoadStateFooter(
-                footer = PhotoLoadStateAdapter{
+                footer = PhotoLoadStateAdapter {
                     photoAdapter.retry()
                 }
             )

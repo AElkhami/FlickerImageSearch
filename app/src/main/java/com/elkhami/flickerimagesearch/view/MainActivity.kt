@@ -6,7 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.elkhami.flickerimagesearch.R
 import com.elkhami.flickerimagesearch.databinding.ActivityMainBinding
-import com.elkhami.flickerimagesearch.view.imagesearch.fragmentfactory.PhotoSearchFragmentFactory
+import com.elkhami.flickerimagesearch.view.fragmentfactory.FlickerPhotoFragmentFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,12 +17,12 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var photoSearchFragmentFactory: PhotoSearchFragmentFactory
+    lateinit var flickerPhotoFragmentFactory: FlickerPhotoFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.fragmentFactory = photoSearchFragmentFactory
+        supportFragmentManager.fragmentFactory = flickerPhotoFragmentFactory
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

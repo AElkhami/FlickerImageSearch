@@ -1,4 +1,4 @@
-package com.elkhami.flickerimagesearch.view.imagesearch.viewmodel
+package com.elkhami.flickerimagesearch.view.photosearch.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
