@@ -11,13 +11,12 @@
        android:layout_height="wrap_content"
        android:layout_marginStart="@dimen/default_margin"
        android:layout_marginTop="@dimen/default_margin"
-       android:layout_marginEnd="@dimen/small_margin"
        android:layout_marginBottom="@dimen/default_margin"
        android:contentDescription="@string/app_icon"
        android:src="@drawable/ic_image_search"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintEnd_toStartOf="@+id/appTitle"
-       app:layout_constraintHorizontal_bias="1.0"
+       app:layout_constraintHorizontal_chainStyle="packed"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +24,7 @@
        android:id="@+id/appTitle"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_marginStart="@dimen/default_margin"
+       android:layout_marginStart="@dimen/very_small_margin"
        android:layout_marginTop="@dimen/default_margin"
        android:layout_marginEnd="@dimen/default_margin"
        android:layout_marginBottom="@dimen/default_margin"
@@ -35,6 +34,6 @@
        android:textStyle="bold"
        app:layout_constraintBottom_toBottomOf="@+id/appIcon"
        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintStart_toEndOf="@+id/appIcon"
        app:layout_constraintTop_toTopOf="@+id/appIcon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

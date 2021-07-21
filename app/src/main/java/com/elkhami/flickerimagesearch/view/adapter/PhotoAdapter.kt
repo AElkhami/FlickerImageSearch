@@ -30,14 +30,7 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
 
             holder.binding.imageTitle.text = photo.title
 
-            val photoUrl =
-                "https://farm" +
-                        "${photo.farm}.staticflickr.com/" +
-                        "${photo.server}/" +
-                        "${photo.id}_" +
-                        "${photo.secret}.jpg"
-
-            glide.load(photoUrl).into(holder.binding.imageView)
+            glide.load(photo.photoURL).into(holder.binding.imageView)
 
             holder.itemView.apply {
 

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 import com.elkhami.flickerimagesearch.data.repository.DefaultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +26,18 @@ class PhotoSearchViewModel @Inject constructor(private val repository: DefaultRe
 
     fun getPaginatingData(searchWord: String) = viewModelScope.launch {
         val flow = repository.getPaginatingData(searchWord).cachedIn(viewModelScope)
-        _photosFlow = flow
+        _photosFlow = flow.map { pagingData: PagingData<Photo> ->
+            pagingData.map { photo ->
+                Photo(
+                    photoURL = "https://farm" +
+                            "${photo.farm}.staticflickr.com/" +
+                            "${photo.server}/" +
+                            "${photo.id}_" +
+                            "${photo.secret}.jpg",
+                    title = photo.title
+                )
+            }
+        }
     }
 
 }

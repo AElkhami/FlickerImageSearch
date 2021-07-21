@@ -6,13 +6,14 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Photo(
-    val farm: Int,
-    val id: String,
-    val isfamily: Int,
-    val isfriend: Int,
-    val ispublic: Int,
-    val owner: String,
-    val secret: String,
-    val server: String,
-    val title: String
+    val farm: Int? = null,
+    val id: String? = null,
+    val isfamily: Int? = null,
+    val isfriend: Int? = null,
+    val ispublic: Int? = null,
+    val owner: String? = null,
+    val secret: String? = null,
+    val server: String? = null,
+    val title: String? = null,
+    var photoURL: String? = null
 ): Parcelable
