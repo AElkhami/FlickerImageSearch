@@ -1,6 +1,7 @@
 package com.elkhami.flickerimagesearch.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
+     val binding get() = _binding!!
 
     @Inject
     lateinit var flickerPhotoFragmentFactory: FlickerPhotoFragmentFactory
@@ -27,10 +28,34 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setUpNavigation()
+
+
+    }
+
+    private fun setUpNavigation() {
         (supportFragmentManager
             .findFragmentById(R.id.fragmentContainer) as NavHostFragment)
             .also {
                 binding.bottomNavigationView.setupWithNavController(it.navController)
+
+                it.navController.addOnDestinationChangedListener{ _, destination, _ ->
+                    when(destination.id){
+                        R.id.imageSearchFragment -> hideBackButtonShowNav()
+                        R.id.displayImageFragment -> showBackButtonHideNav()
+                        R.id.savedImagesFragment -> hideBackButtonShowNav()
+                    }
+                }
             }
+    }
+
+    private fun showBackButtonHideNav(){
+        binding.include.backButton.visibility = View.VISIBLE
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    private fun hideBackButtonShowNav(){
+        binding.include.backButton.visibility = View.GONE
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }

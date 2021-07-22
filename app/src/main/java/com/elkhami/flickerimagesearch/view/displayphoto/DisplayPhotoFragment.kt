@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
 import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 import com.elkhami.flickerimagesearch.databinding.FragmentDisplayPhotoBinding
+import com.elkhami.flickerimagesearch.view.MainActivity
 import com.elkhami.flickerimagesearch.view.displayphoto.viewmodel.DisplayPhotoViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,6 +48,10 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
 
         subscribeToInsertObserver()
         subscribeToDeleteObserver()
+
+        (activity as MainActivity).binding.include.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         arg.photoArg?.let {
             glide.load(it.photoURL).into(binding.imageView)
