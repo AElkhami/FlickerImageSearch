@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface Repository {
 
-    suspend fun insertPhotoToDB(photo: SavedPhoto)
+    suspend fun insertPhotoToDB(photo: SavedPhoto): Long
 
-    suspend fun deleteSavedPhoto(photo: SavedPhoto)
+    suspend fun deleteSavedPhoto(photo: SavedPhoto): Int
 
     fun getSavedPhoto(imageId : Int): LiveData<SavedPhoto>
 

@@ -15,6 +15,11 @@
             android:defaultValue="@null"
             app:argType="com.elkhami.flickerimagesearch.data.remote.responses.Photo"
             app:nullable="true" />
+        <argument
+            android:name="savedPhotoArg"
+            android:defaultValue="@null"
+            app:argType="com.elkhami.flickerimagesearch.data.local.SavedPhoto"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/savedImagesFragment"

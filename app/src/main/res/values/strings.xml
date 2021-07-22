@@ -9,4 +9,5 @@
     <string name="somthing_went_wrong">Something went wrong.</string>
     <string name="photo_arg">PhotoArg</string>
     <string name="retry">Retry</string>
+    <string name="delete_photo">Delete photo</string>
 </resources>

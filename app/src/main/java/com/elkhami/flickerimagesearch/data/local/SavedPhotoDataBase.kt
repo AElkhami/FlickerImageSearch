@@ -9,8 +9,10 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [SavedPhoto::class],
-    version = 1
+    version = 2
 )
 abstract class SavedPhotoDataBase: RoomDatabase() {
     abstract fun savedPhotoDAO(): SavedPhotoDAO
+
+
 }

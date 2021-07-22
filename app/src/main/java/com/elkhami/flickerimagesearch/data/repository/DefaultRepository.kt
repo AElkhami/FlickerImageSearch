@@ -20,13 +20,13 @@ class DefaultRepository @Inject constructor(
     private val api: FlickerAPI
 ) : Repository {
 
-    override suspend fun insertPhotoToDB(photo: SavedPhoto) {
+    override suspend fun insertPhotoToDB(photo: SavedPhoto) =
         dao.insertPhotoToDB(photo)
-    }
 
-    override suspend fun deleteSavedPhoto(photo: SavedPhoto) {
+
+    override suspend fun deleteSavedPhoto(photo: SavedPhoto) =
         dao.deleteSavedPhoto(photo)
-    }
+
 
     override fun getSavedPhoto(imageId: Int): LiveData<SavedPhoto> {
         return dao.getSavedPhoto(imageId)

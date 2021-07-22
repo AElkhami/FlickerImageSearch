@@ -10,10 +10,10 @@ import androidx.room.*
 interface SavedPhotoDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPhotoToDB(photo: SavedPhoto)
+    suspend fun insertPhotoToDB(photo: SavedPhoto): Long
 
     @Delete
-    suspend fun deleteSavedPhoto(photo: SavedPhoto)
+    suspend fun deleteSavedPhoto(photo: SavedPhoto): Int
 
     @Query("SELECT * FROM saved_photo WHERE id = :imageId")
     fun getSavedPhoto(imageId : Int): LiveData<SavedPhoto>
