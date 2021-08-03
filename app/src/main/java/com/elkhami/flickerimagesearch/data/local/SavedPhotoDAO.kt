@@ -18,7 +18,7 @@ interface SavedPhotoDAO {
     @Query("SELECT * FROM saved_photo WHERE id = :imageId")
     fun getSavedPhoto(imageId : Int): LiveData<SavedPhoto>
 
-    @Query("SELECT * FROM saved_photo")
+    @Query("SELECT * FROM saved_photo ORDER BY id DESC")
     suspend fun getAllSavedPhotos(): List<SavedPhoto>
 
 }
