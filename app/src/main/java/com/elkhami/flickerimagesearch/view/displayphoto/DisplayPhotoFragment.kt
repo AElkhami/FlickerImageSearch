@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
-import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 import com.elkhami.flickerimagesearch.databinding.FragmentDisplayPhotoBinding
 import com.elkhami.flickerimagesearch.view.MainActivity
 import com.elkhami.flickerimagesearch.view.displayphoto.viewmodel.DisplayPhotoViewModel
@@ -22,7 +21,9 @@ import javax.inject.Inject
  * Created by A.Elkhami on 06,July,2021
  */
 @AndroidEntryPoint
-class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager) : Fragment() {
+class DisplayPhotoFragment @Inject constructor(
+    private val glide: RequestManager
+) : Fragment() {
 
     private var _binding: FragmentDisplayPhotoBinding? = null
     private val binding get() = _binding!!
@@ -31,7 +32,6 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
 
     private val viewModel: DisplayPhotoViewModel by viewModels()
 
-    private lateinit var photo: Photo
     private lateinit var savedPhoto: SavedPhoto
 
     override fun onCreateView(
@@ -46,34 +46,41 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        subscribeToInsertObserver()
-        subscribeToDeleteObserver()
+        subscribeToInsertPhotoObserver()
+        subscribeToDeletePhotoObserver()
 
         (activity as MainActivity).binding.include.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        arg.photoArg?.let {
-            glide.load(it.photoURL).into(binding.imageView)
-            binding.imageTitle.text = it.title
-
-            photo = it
-        }
 
         arg.savedPhotoArg?.let {
+            glide.load(it.photoUrl).into(binding.imageView)
+            binding.imageTitle.text = it.photoTitle
+
             savedPhoto = it
         }
 
         binding.savePhotoButton.setOnClickListener {
-            viewModel.savePhoto(photo)
+            viewModel.savePhoto(savedPhoto)
         }
 
         binding.deletePhotoButton.setOnClickListener {
             viewModel.deletePhoto(savedPhoto)
         }
+
+        savedPhoto.let {
+            if (it.isPhotosSaved) {
+                binding.savePhotoButton.visibility = View.GONE
+                binding.deletePhotoButton.visibility = View.VISIBLE
+            } else {
+                binding.savePhotoButton.visibility = View.VISIBLE
+                binding.deletePhotoButton.visibility = View.GONE
+            }
+        }
     }
 
-    private fun subscribeToInsertObserver() {
+    private fun subscribeToInsertPhotoObserver() {
 
         viewModel.insertedPhoto.observe(viewLifecycleOwner, { insertedPhoto ->
 
@@ -93,7 +100,7 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
 
     }
 
-    private fun subscribeToDeleteObserver() {
+    private fun subscribeToDeletePhotoObserver() {
 
         viewModel.deletedRowNumber.observe(viewLifecycleOwner, { deletedRowNumber ->
 

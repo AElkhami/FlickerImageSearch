@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkhami.flickerimagesearch.R
 import com.elkhami.flickerimagesearch.databinding.FragmentSavedPhotosBinding
@@ -43,6 +44,7 @@ class SavedPhotosFragment(
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerAdapter()
+        setPhotoAdapterClickListener()
         observeOnSavedPhotos()
     }
 
@@ -70,6 +72,17 @@ class SavedPhotosFragment(
                 )
             )
             layoutManager = GridLayoutManager(requireContext(), Constants.GRID_SPAN_COUNT)
+        }
+    }
+
+    private fun setPhotoAdapterClickListener() {
+        photoAdapter.setOnItemClickListener {
+            val bundle = Bundle()
+            bundle.apply {
+                putParcelable("savedPhotoArg", it)
+            }
+            findNavController()
+                .navigate(R.id.action_savedImagesFragment_to_displayImageFragment, bundle)
         }
     }
 

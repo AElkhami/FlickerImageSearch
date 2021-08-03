@@ -24,14 +24,9 @@ class DisplayPhotoViewModel
     private val _deletedRowNumber = MutableLiveData<Int>()
     var deletedRowNumber: LiveData<Int> = _deletedRowNumber
 
-    fun savePhoto(photo: Photo) {
+    fun savePhoto(savedPhoto: SavedPhoto) {
 
-        val savedPhoto = SavedPhoto().apply {
-            photoUrl = photo.photoURL
-            photoTitle = photo.title
-            flickerPhotoId = photo.id
-            isPhotosSaved = true
-        }
+        savedPhoto.isPhotosSaved = true
 
         viewModelScope.launch {
             val insertId: Long?

@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.elkhami.flickerimagesearch.data.remote.responses.Photo
+import com.elkhami.flickerimagesearch.data.local.SavedPhoto
 import com.elkhami.flickerimagesearch.databinding.PhotoItemBinding
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 
 class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
-    PagingDataAdapter<Photo, PhotoAdapter.ViewHolder>(DiffUtilCallback) {
+    PagingDataAdapter<SavedPhoto, PhotoAdapter.ViewHolder>(DiffUtilCallback) {
 
     class ViewHolder(val binding: PhotoItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -26,36 +26,36 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        getItem(position)?.let { photo ->
+        getItem(position)?.let { savedPhoto ->
 
-            holder.binding.imageTitle.text = photo.title
+            holder.binding.imageTitle.text = savedPhoto.photoTitle
 
-            glide.load(photo.photoURL).into(holder.binding.imageView)
+            glide.load(savedPhoto.photoUrl).into(holder.binding.imageView)
 
             holder.itemView.apply {
 
                 setOnClickListener {
                     onItemClickListener?.let {
-                        it(photo)
+                        it(savedPhoto)
                     }
                 }
             }
         }
     }
 
-    object DiffUtilCallback : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+    object DiffUtilCallback : DiffUtil.ItemCallback<SavedPhoto>() {
+        override fun areItemsTheSame(oldItem: SavedPhoto, newItem: SavedPhoto): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        override fun areContentsTheSame(oldItem: SavedPhoto, newItem: SavedPhoto): Boolean {
             return oldItem == newItem
         }
     }
 
-    private var onItemClickListener: ((Photo) -> Unit)? = null
+    private var onItemClickListener: ((SavedPhoto) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((Photo) -> Unit)) {
+    fun setOnItemClickListener(listener: ((SavedPhoto) -> Unit)) {
         onItemClickListener = listener
     }
 }

@@ -1,10 +1,7 @@
 package com.elkhami.flickerimagesearch.data.local
 
 import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by A.Elkhami on 07,July,2021

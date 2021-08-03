@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.elkhami.flickerimagesearch.data.local.SavedPhoto
 import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 import com.elkhami.flickerimagesearch.data.repository.DefaultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,22 +21,22 @@ import javax.inject.Inject
 class PhotoSearchViewModel @Inject constructor(private val repository: DefaultRepository) :
     ViewModel() {
 
-    private lateinit var _photosFlow: Flow<PagingData<Photo>>
-    val photosFlow: Flow<PagingData<Photo>>
+    private lateinit var _photosFlow: Flow<PagingData<SavedPhoto>>
+    val photosFlow: Flow<PagingData<SavedPhoto>>
         get() = _photosFlow
 
     fun getPaginatingData(searchWord: String) = viewModelScope.launch {
         val flow = repository.getPaginatingData(searchWord).cachedIn(viewModelScope)
         _photosFlow = flow.map { pagingData: PagingData<Photo> ->
             pagingData.map { photo ->
-                Photo(
-                    id = photo.id,
-                    photoURL = "https://farm" +
+                SavedPhoto(
+                    flickerPhotoId = photo.id,
+                    photoUrl = "https://farm" +
                             "${photo.farm}.staticflickr.com/" +
                             "${photo.server}/" +
                             "${photo.id}_" +
                             "${photo.secret}.jpg",
-                    title = photo.title
+                    photoTitle = photo.title
                 )
             }
         }

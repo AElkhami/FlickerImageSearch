@@ -1,4 +1,4 @@
-package com.elkhami.flickerimagesearch
+package com.elkhami.flickerimagesearch.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

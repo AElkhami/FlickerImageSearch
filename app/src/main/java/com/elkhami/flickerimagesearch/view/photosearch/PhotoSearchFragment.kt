@@ -89,7 +89,7 @@ class PhotoSearchFragment @Inject constructor(
         photoAdapter.setOnItemClickListener {
             val bundle = Bundle()
             bundle.apply {
-                putParcelable("photoArg", it)
+                putParcelable("savedPhotoArg", it)
             }
             findNavController()
                 .navigate(R.id.action_imageSearchFragment_to_displayImageFragment, bundle)
