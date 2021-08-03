@@ -29,6 +29,7 @@ class PhotoSearchViewModel @Inject constructor(private val repository: DefaultRe
         _photosFlow = flow.map { pagingData: PagingData<Photo> ->
             pagingData.map { photo ->
                 Photo(
+                    id = photo.id,
                     photoURL = "https://farm" +
                             "${photo.farm}.staticflickr.com/" +
                             "${photo.server}/" +

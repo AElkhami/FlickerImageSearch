@@ -6,9 +6,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.elkhami.flickerimagesearch.data.local.SavedPhoto
 import com.elkhami.flickerimagesearch.data.local.SavedPhotoDAO
-import com.elkhami.flickerimagesearch.data.paging.PhotoPagingDataSource
+import com.elkhami.flickerimagesearch.data.paging.FlickerRemoteMediator
+import com.elkhami.flickerimagesearch.data.paging.SavedPhotoPagingSource
 import com.elkhami.flickerimagesearch.data.remote.api.FlickerAPI
 import com.elkhami.flickerimagesearch.data.remote.responses.Photo
+import com.elkhami.flickerimagesearch.other.Constants.PAGE_SIZE
+import com.elkhami.flickerimagesearch.other.Constants.PREFETCH_DISTANCE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -32,14 +35,22 @@ class DefaultRepository @Inject constructor(
         return dao.getSavedPhoto(imageId)
     }
 
-    override fun getAllSavedPhotos(): LiveData<List<SavedPhoto>> {
-        return dao.getAllSavedPhotos()
-    }
+    override fun getAllSavedPhotos()
+            : Flow<PagingData<SavedPhoto>> = Pager(
+        config = PagingConfig(
+            PAGE_SIZE,
+            PREFETCH_DISTANCE
+        ),
+        pagingSourceFactory = { SavedPhotoPagingSource(dao) }
+    ).flow
 
     override suspend fun getPaginatingData(searchWord: String)
-    : Flow<PagingData<Photo>> = Pager(
-        config = PagingConfig(20 , 2),
-    pagingSourceFactory = {PhotoPagingDataSource(api, searchWord)}
+            : Flow<PagingData<Photo>> = Pager(
+        config = PagingConfig(
+            PAGE_SIZE,
+            PREFETCH_DISTANCE
+        ),
+        pagingSourceFactory = { FlickerRemoteMediator(api, searchWord) }
     ).flow
 
 }

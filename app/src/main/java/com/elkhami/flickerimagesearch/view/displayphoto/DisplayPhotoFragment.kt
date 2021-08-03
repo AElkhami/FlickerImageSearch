@@ -27,9 +27,9 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
     private var _binding: FragmentDisplayPhotoBinding? = null
     private val binding get() = _binding!!
 
-    private val arg : DisplayPhotoFragmentArgs by navArgs()
+    private val arg: DisplayPhotoFragmentArgs by navArgs()
 
-    private val viewModel : DisplayPhotoViewModel by viewModels()
+    private val viewModel: DisplayPhotoViewModel by viewModels()
 
     private lateinit var photo: Photo
     private lateinit var savedPhoto: SavedPhoto
@@ -60,7 +60,7 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
             photo = it
         }
 
-        arg.savedPhotoArg?.let{
+        arg.savedPhotoArg?.let {
             savedPhoto = it
         }
 
@@ -73,13 +73,13 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
         }
     }
 
-    private fun subscribeToInsertObserver(){
+    private fun subscribeToInsertObserver() {
 
-        viewModel.insertedPhoto.observe(viewLifecycleOwner,{ insertedPhoto->
+        viewModel.insertedPhoto.observe(viewLifecycleOwner, { insertedPhoto ->
 
             savedPhoto = insertedPhoto
 
-            if(insertedPhoto.isPhotosSaved){
+            if (insertedPhoto.isPhotosSaved) {
                 Snackbar.make(
                     binding.root,
                     "Photo hase been saved.",
@@ -93,11 +93,11 @@ class DisplayPhotoFragment @Inject constructor(private val glide: RequestManager
 
     }
 
-    private fun subscribeToDeleteObserver(){
+    private fun subscribeToDeleteObserver() {
 
-        viewModel.deletedRowNumber.observe(viewLifecycleOwner,{ deletedRowNumber->
+        viewModel.deletedRowNumber.observe(viewLifecycleOwner, { deletedRowNumber ->
 
-            if(deletedRowNumber > 0){
+            if (deletedRowNumber > 0) {
                 Snackbar.make(
                     binding.root,
                     "Photo hase been deleted.",

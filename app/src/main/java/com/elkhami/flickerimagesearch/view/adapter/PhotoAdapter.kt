@@ -49,7 +49,7 @@ class PhotoAdapter @Inject constructor(private val glide: RequestManager) :
         }
 
         override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 

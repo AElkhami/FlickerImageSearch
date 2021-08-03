@@ -13,6 +13,7 @@ import kotlinx.parcelize.Parcelize
 data class SavedPhoto(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
+    var flickerPhotoId: String? = null,
     var photoUrl: String? = null,
     var photoTitle: String? = null,
     var isPhotosSaved: Boolean = false

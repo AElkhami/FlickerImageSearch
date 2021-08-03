@@ -1,5 +1,6 @@
 package com.elkhami.flickerimagesearch.data.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
@@ -9,9 +10,12 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [SavedPhoto::class],
-    version = 2
+    version = 3,
+    autoMigrations = [
+        AutoMigration(from = 2, to = 3)
+    ]
 )
-abstract class SavedPhotoDataBase: RoomDatabase() {
+abstract class SavedPhotoDataBase : RoomDatabase() {
     abstract fun savedPhotoDAO(): SavedPhotoDAO
 
 

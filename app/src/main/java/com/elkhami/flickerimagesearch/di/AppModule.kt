@@ -8,6 +8,8 @@ import com.elkhami.flickerimagesearch.BuildConfig
 import com.elkhami.flickerimagesearch.R
 import com.elkhami.flickerimagesearch.data.local.SavedPhotoDAO
 import com.elkhami.flickerimagesearch.data.local.SavedPhotoDataBase
+import com.elkhami.flickerimagesearch.data.mapper.DataBaseMapper
+import com.elkhami.flickerimagesearch.data.mapper.DefaultDbMapper
 import com.elkhami.flickerimagesearch.data.remote.api.FlickerAPI
 import com.elkhami.flickerimagesearch.data.repository.DefaultRepository
 import com.elkhami.flickerimagesearch.data.repository.Repository
@@ -59,6 +61,11 @@ object AppModule {
     @Provides
     fun provideRepository(dao: SavedPhotoDAO, api: FlickerAPI) =
         DefaultRepository(dao, api) as Repository
+
+
+    @Provides
+    fun provideDbMapper() =
+       DefaultDbMapper() as DataBaseMapper
 
     @Singleton
     @Provides

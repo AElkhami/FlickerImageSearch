@@ -29,6 +29,7 @@ class DisplayPhotoViewModel
         val savedPhoto = SavedPhoto().apply {
             photoUrl = photo.photoURL
             photoTitle = photo.title
+            flickerPhotoId = photo.id
             isPhotosSaved = true
         }
 

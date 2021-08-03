@@ -12,4 +12,6 @@ object Constants {
     const val FLICKER_SEARCH_METHOD = "flickr.photos.search"
     const val GRID_SPAN_COUNT = 2
     const val SEARCH_DELAY_TIME = 3000L
+    const val PAGE_SIZE = 20
+    const val PREFETCH_DISTANCE = 2
 }

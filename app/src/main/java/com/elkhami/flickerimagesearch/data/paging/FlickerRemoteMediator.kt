@@ -9,7 +9,9 @@ import com.elkhami.flickerimagesearch.data.remote.responses.Photo
 /**
  * Created by A.Elkhami on 18,July,2021
  */
-class PhotoPagingDataSource(private val api: FlickerAPI, private val searchWord: String) :
+class FlickerRemoteMediator(
+    private val api: FlickerAPI,
+    private val searchWord: String) :
     PagingSource<Int, Photo>() {
 
     override fun getRefreshKey(state: PagingState<Int, Photo>): Int = 1
